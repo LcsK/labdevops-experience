@@ -1,0 +1,10 @@
+__pycache__
+.git
+.github
+.gitignore
+Dockerfile
+LICENSE
+Procfile
+README.md
+sonar-project.properties
+test.py
