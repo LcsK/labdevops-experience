@@ -23,13 +23,14 @@ jobs:
       - name: Install Requirements
         run:  pip install flask flask-wtf coverage
 
-      - name: Unit Test
+      - name: Unit Test coverage
         run: |
           coverage run -m unittest test.py
-          coverage xml
+          coverage xml -i
 
 
   SonarCloud:
+      needs: [UnitTest] # Needs the Coverage file
       name: SonarCloud
       runs-on: ubuntu-latest
       steps:
@@ -43,7 +44,7 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   Build:
-      needs: [UnitTest,SonarCloud ]
+      needs: [SonarCloud]
       name: Build
       runs-on: ubuntu-latest
       steps:
