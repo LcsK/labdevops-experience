@@ -28,6 +28,13 @@ jobs:
           coverage run -m unittest test.py
           coverage xml -i
 
+      - name: Store coverage output
+        uses: actions/upload-artifact@master
+        with:
+          name: coverage-output
+          path: coverage.xml
+          retention-days: 1
+
 
   SonarCloud:
       needs: [UnitTest] # Needs the Coverage file
@@ -37,6 +44,10 @@ jobs:
         - uses: actions/checkout@v2
           with:
             fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+        - name: Recover coverage output
+          uses: actions/download-artifact@v3
+          with:
+            name: coverage-output
         - name: SonarCloud Scan
           uses: SonarSource/sonarcloud-github-action@master
           env:
